@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "quarterly": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "monthly": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "employee": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "injury": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "vehicle_collision": {
+    "dataSource": "mssqldb",
+    "public": false
+  }
+}

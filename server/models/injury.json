@@ -1,0 +1,28 @@
+{
+  "name": "injury",
+  "base": "PersistedModel",
+  "options": {
+    "idInjection": true,
+    "mssql": {
+      "table": "injury$"
+    }
+  },
+  "properties": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "employee_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

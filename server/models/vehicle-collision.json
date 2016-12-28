@@ -1,0 +1,27 @@
+{
+  "name": "vehicle_collision",
+  "base": "PersistedModel",
+  "options": {
+    "idInjection": true,
+    "mssql": {
+      "table": "veh_accident$"
+    }
+  },
+  "properties": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "location": {
+      "type": "geopoint"
+    },
+    "employee_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

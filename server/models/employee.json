@@ -1,0 +1,31 @@
+{
+  "name": "employee",
+  "base": "PersistedModel",
+  "options": {
+    "idInjection": true,
+    "mssql": {
+      "table": "employee$"
+    }
+  },
+  "properties": {
+    "fname": {
+      "type": "string",
+      "required": true
+    },
+    "lname": {
+      "type": "string",
+      "required": true
+    },
+    "hire_date": {
+      "type": "date",
+      "required": true
+    },
+    "company_id": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,51 @@
+{
+  "name": "quarterly",
+  "base": "PersistedModel",
+  "options": {
+    "idInjection": true,
+    "mssql": {
+      "table": "qtly_status"
+    }
+  },
+  "properties": {
+    "created_on": {
+      "type": "date",
+      "required": true
+    },
+    "qtr": {
+      "type": "number",
+      "required": true
+    },
+    "yr": {
+      "type": "number",
+      "required": true
+    },
+    "required_count": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "completed_count": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "requirement_met": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "met_requirement": {
+      "type": "date",
+      "required": false
+    },
+    "employee_id": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
