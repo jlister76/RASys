@@ -1,7 +1,7 @@
 'use strict';
 const moment = require('moment'),
   _ = require('lodash');
-module.exports = function(app){
+module.exports = (app)=> {
   /*
    * The `app` object provides access to a letiety of LoopBack resources such as
    * models (e.g. `app.models.YourModelName`) or data sources (e.g.
@@ -12,7 +12,7 @@ module.exports = function(app){
   let empl = app.models.employee,
     i = app.models.injury,
     v = app.models.VehicleCollision,
-    mo = 10,
+    mo = moment().month(),
     ninetyDays = moment().subtract(90, 'days'),
     mthly = [],
     status;
@@ -22,7 +22,7 @@ module.exports = function(app){
     i.find({"where":{"date":{"gte": ninetyDays}}}), //return all injuries within 90 days
     v.find({"where":{"date":{"gte": ninetyDays}}}) //return all vehicle accidents within 90 days
   ])
-    .then(function(data){
+    .then((data)=>{
       empl = data[0];
       i = data[1];
       v = data[2];
@@ -32,17 +32,17 @@ module.exports = function(app){
       setMthlyStatus(empl,mthly);
 
       function getNewHires (empl){
-        empl.forEach(function(e){
+        empl.forEach((e)=>{
           if (e.hire_date <= ninetyDays){
             mthly.push(e.id);
           }
         })
       }
       function getInjuriesAndAccidents (inj,acc){
-        inj.forEach(function(i){
+        inj.forEach((i)=>{
           mthly.push(i.employee_id)
         });
-        acc.forEach(function(a){
+        acc.forEach((a)=>{
           mthly.push(a.employee_id)
         })
       }
@@ -59,19 +59,19 @@ module.exports = function(app){
           "ra_id": null,
           "qs_id": qs
         })
-          .then(function(o){
+          .then((o)=>{
             //console.log(o);
           })
-          .catch(function(err){
+          .catch((err)=>{
             console.log(err);
           })
 
       }
       function setMthlyStatus(empl,mthly){
 
-        empl.forEach(function(e){
+        empl.forEach((e)=>{
           app.models.quarterly.findOne({"where": {"employee_id": e.id,"yr":moment().year(),"qtr":moment().quarter()}})
-            .then(function(qs){
+            .then((qs)=>{
               if(isInAry(e.id,mthly)){
                 status = "required";
               }else if(mo === 0 || mo === 3 || mo === 6 || mo === 9 && !isInAry(e.id,mthly)){
@@ -88,7 +88,7 @@ module.exports = function(app){
               createMthlyInstance(status,e.id,qs.id);
 
             })
-            .catch(function(err){console.error(err)});
+            .catch((err)=>{console.error(err)});
         });
 
 

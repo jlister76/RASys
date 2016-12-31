@@ -2,7 +2,7 @@
 const moment = require('moment'),
   _ = require('lodash');
 
-module.exports = function(app){
+module.exports = (app)=>{
   /*
    * The `app` object provides access to a letiety of LoopBack resources such as
    * models (e.g. `app.models.YourModelName`) or data sources (e.g.
@@ -24,7 +24,7 @@ module.exports = function(app){
       i.find({"where":{"date":{"gte": ninetyDays}}}), //return all injuries within 90 days
       v.find({"where":{"date":{"gte": ninetyDays}}}) //return all vehicle accidents within 90 days
     ])
-      .then(function(data) {
+      .then((data)=> {
         empl = data[0];
         i = data[1];
         v = data[2];
@@ -42,10 +42,10 @@ module.exports = function(app){
           })
         }
         function getInjuriesAndAccidents (inj,acc){
-          inj.forEach(function(i){
+          inj.forEach((i)=>{
             mthly.push(i.employee_id)
           });
-          acc.forEach(function(a){
+          acc.forEach((a)=>{
             mthly.push(a.employee_id)
           })
         }
@@ -61,16 +61,16 @@ module.exports = function(app){
             "met_requirement": null,
             "employee_id": id
           })
-            .then(function(o){
-              console.log(o);
+            .then((o)=>{
+              //console.log(o);
             })
-            .catch(function(err){
+            .catch((err)=>{
               console.log(err);
             })
 
         }
         function setRequirement(empl,mthly){
-          empl.forEach(function(e){
+          empl.forEach((e)=>{
             let id = e.id,
               r = (isInAry(id,mthly))?3:1;
 
@@ -85,7 +85,7 @@ module.exports = function(app){
 
 
       })
-      .catch(function(err){ console.log("Error.", err)})
+      .catch((err)=>{ console.log("Error.", err)})
 
 
   }else{
