@@ -72,6 +72,11 @@ module.exports = (app)=> {
         empl.forEach((e)=>{
           app.models.quarterly.findOne({"where": {"employee_id": e.id,"yr":moment().year(),"qtr":moment().quarter()}})
             .then((qs)=>{
+            /*
+            * Employees are set to complete once the quarterly requirement has been met.
+            * Otherwise, monthly employees or quarterly employees in the third month are required.
+            * Quarterly employees in the first and second month are set to optional.
+            */
               if(isInAry(e.id,mthly)){
                 status = "required";
               }else if(mo === 0 || mo === 3 || mo === 6 || mo === 9 && !isInAry(e.id,mthly)){

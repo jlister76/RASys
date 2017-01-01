@@ -14,8 +14,11 @@ module.exports = (app)=>{
     i = app.models.injury,
     v = app.models.VehicleCollision,
     mo = moment().month(),
+    thirtyDays = moment().subtract(30,'days'),
+    sixtyDays = moment().subtract(60,'days'),
     ninetyDays = moment().subtract(90, 'days'),
-    mthly = [];
+    duo =[],
+    tribus = [];
 
 
   if (mo === 0 || mo === 3 || mo === 6 || mo === 9){
@@ -31,22 +34,32 @@ module.exports = (app)=>{
 
         getNewHires(empl);
         getInjuriesAndAccidents(i,v);
-        setRequirement(empl,mthly);
+        setRequirement(empl,duo,tribus);
 
 
         function getNewHires (empl){
           empl.forEach(function(e){
             if (e.hire_date <= ninetyDays){
-              mthly.push(e.id);
+              tribus.push(e.id);
             }
           })
         }
         function getInjuriesAndAccidents (inj,acc){
           inj.forEach((i)=>{
-            mthly.push(i.employee_id)
+            if(i.date < thirtyDays && i.date > sixtyDays){ //more than 30 & within 60 days
+              duo.push(i.employee_id);
+              console.log(i.date, ">30" )
+            }else if (i.date > thirtyDays) { //within 30 days
+              tribus.push(i.employee_id);
+
+            }
           });
           acc.forEach((a)=>{
-            mthly.push(a.employee_id)
+            if(a.date < thirtyDays && a.date > sixtyDays ){ //more than 30 & within 60 days
+              duo.push(a.employee_id);
+            }else if (i.date > thirtyDays){ //within 30 days
+              tribus.push(a.employee_id);
+            }
           })
         }
         function createQtlyInstances (r,id){
@@ -69,10 +82,23 @@ module.exports = (app)=>{
             })
 
         }
-        function setRequirement(empl,mthly){
+        function setRequirement(empl,duo,tribus){
+          /*
+          * If an incident occurred in the past 30 days OR if an employee is a new hire, the required
+          * amount of risk assesments is three. If an incident occurred after the past thirty days
+          * and within sixty days, then the subsequent quarter requirement for risk assessments is set to two.
+          * Otherwise, the requirement is set to 1.
+          */
           empl.forEach((e)=>{
             let id = e.id,
-              r = (isInAry(id,mthly))?3:1;
+                r;
+              if(isInAry(id,duo)){
+                r = 2;
+              }else if(isInAry(id,tribus)){
+                r = 3;
+              }else {
+                r =1;
+              }
 
             createQtlyInstances(r,id);
 
