@@ -38,7 +38,7 @@ module.exports = (app)=>{
 
 
         function getNewHires (empl){
-          empl.forEach(function(e){
+          empl.forEach((e)=>{
             if (e.hire_date <= ninetyDays){
               tribus.push(e.id);
             }
