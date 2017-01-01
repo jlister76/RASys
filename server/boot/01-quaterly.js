@@ -82,10 +82,10 @@ module.exports = (app)=>{
         }
         function setRequirement(empl,duo,tribus){
           /*
-          * If an incident occurred in the past 30 days OR if an employee is a new hire, the required
-          * amount of risk assesments is three. If an incident occurred after the past thirty days
-          * and within sixty days, then the subsequent quarter requirement for risk assessments is set to two.
-          * Otherwise, the requirement is set to 1.
+          * The required amount of risk assesments is three if an incident occurred
+          * in the past 30 days OR if an employee is a new hire. The required amount
+          * of risk assessments is set to two if an incident occurred between the past
+          * thirty-one and sixty days. Otherwise, the requirement is set to 1.
           */
           empl.forEach((e)=>{
             let id = e.id,
