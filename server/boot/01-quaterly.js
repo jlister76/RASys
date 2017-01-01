@@ -46,16 +46,14 @@ module.exports = (app)=>{
         }
         function getInjuriesAndAccidents (inj,acc){
           inj.forEach((i)=>{
-            if(i.date < thirtyDays && i.date > sixtyDays){ //more than 30 & within 60 days
+            if(i.date < thirtyDays && i.date >= sixtyDays){ //more than 30 & not more than 60 days
               duo.push(i.employee_id);
-              console.log(i.date, ">30" )
             }else if (i.date > thirtyDays) { //within 30 days
               tribus.push(i.employee_id);
-
             }
           });
           acc.forEach((a)=>{
-            if(a.date < thirtyDays && a.date > sixtyDays ){ //more than 30 & within 60 days
+            if(a.date < thirtyDays && a.date >= sixtyDays ){ //more than 30 & not more than 60 days
               duo.push(a.employee_id);
             }else if (i.date > thirtyDays){ //within 30 days
               tribus.push(a.employee_id);
