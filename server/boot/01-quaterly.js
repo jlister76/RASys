@@ -90,12 +90,12 @@ module.exports = (app)=>{
           empl.forEach((e)=>{
             let id = e.id,
                 r;
-              if(isInAry(id,duo)){
-                r = 2;
-              }else if(isInAry(id,tribus)){
+              if(isInAry(id,tribus)){
                 r = 3;
+              }else if(isInAry(id,duo)){
+                r = 2;
               }else {
-                r =1;
+                r = 1;
               }
 
             createQtlyInstances(r,id);
