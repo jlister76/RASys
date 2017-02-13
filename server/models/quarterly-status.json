@@ -1,30 +1,41 @@
 {
-  "name": "employee",
+  "name": "quarterlyStatus",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "fname": {
-      "type": "string",
-      "required": true
-    },
-    "lname": {
-      "type": "string",
-      "required": true
-    },
-    "email": {
-      "type": "string",
-      "required": true
-    },
-    "employeeNumber": {
-      "type": "Number",
-      "required": true
-    },
-    "hire_date": {
+    "created_on": {
       "type": "date",
       "required": true
+    },
+    "qtr": {
+      "type": "number",
+      "required": true
+    },
+    "yr": {
+      "type": "number",
+      "required": true
+    },
+    "required_count": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "completed_count": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "requirement_met": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "met_requirement": {
+      "type": "date",
+      "required": false
     },
     "regionId": {
       "type": "number",
@@ -45,6 +56,11 @@
   },
   "validations": [],
   "relations": {
+    "employee": {
+      "type": "belongsTo",
+      "model": "employee",
+      "foreignKey": ""
+    },
     "region": {
       "type": "belongsTo",
       "model": "region",

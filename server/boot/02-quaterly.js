@@ -13,7 +13,8 @@ module.exports = (app)=>{
   let empl = app.models.employee,
     i = app.models.injury,
     v = app.models.VehicleCollision,
-    mo = moment().month(),
+    currentMonth = moment().format('MMMM'),
+    mo = 0,
     thirtyDays = moment().subtract(30,'days'),
     sixtyDays = moment().subtract(60,'days'),
     ninetyDays = moment().subtract(90, 'days'),
@@ -21,7 +22,7 @@ module.exports = (app)=>{
     tribus = [];
 
 
-  if (mo === 0 || mo === 3 || mo === 6 || mo === 9){
+  if (mo === 0 || mo === 3 || mo === 6 || mo === 9){//first month of each quarter
     Promise.all([
       empl.find(), //return all employees
       i.find({"where":{"date":{"gte": ninetyDays}}}), //return all injuries within 90 days
@@ -47,22 +48,22 @@ module.exports = (app)=>{
         function getInjuriesAndAccidents (inj,acc){
           inj.forEach((i)=>{
             if(i.date < thirtyDays && i.date >= sixtyDays){ //more than 30 & not more than 60 days
-              duo.push(i.employee_id);
+              duo.push(i.employeeId);
             }else if (i.date > thirtyDays) { //within 30 days
-              tribus.push(i.employee_id);
+              tribus.push(i.employeeId);
             }
           });
           acc.forEach((a)=>{
             if(a.date < thirtyDays && a.date >= sixtyDays ){ //more than 30 & not more than 60 days
-              duo.push(a.employee_id);
+              duo.push(a.employeeId);
             }else if (i.date > thirtyDays){ //within 30 days
-              tribus.push(a.employee_id);
+              tribus.push(a.employeeId);
             }
           })
         }
-        function createQtlyInstances (r,id){
-
-          app.models.quarterly.create({
+        function createQtlyInstances (r,id,regionId,divisionId,projectId,groupId){
+          //console.log("creating instance ",regionId,divisionId,projectId,groupId);
+          app.models.quarterlyStatus.create({
             "created_on": moment(),
             "qtr": moment().quarter(),
             "yr": moment().year(),
@@ -70,7 +71,11 @@ module.exports = (app)=>{
             "completed_count": 0,
             "requirement_met": 0,
             "met_requirement": null,
-            "employee_id": id
+            "employeeId": id,
+            "regionId": regionId,
+            "divisionId": divisionId,
+            "projectId": projectId,
+            "groupId": groupId
           })
             .then((o)=>{
               //console.log(o);
@@ -88,8 +93,13 @@ module.exports = (app)=>{
           * thirty-one and sixty days. Otherwise, the requirement is set to 1.
           */
           empl.forEach((e)=>{
+            console.log(e);
             let id = e.id,
-                r;
+              regionId = e.regionId,
+              divisionId = e.divisionId,
+              projectId = e.projectId,
+              groupId = e.groupId,
+              r;
               if(isInAry(id,tribus)){
                 r = 3;
               }else if(isInAry(id,duo)){
@@ -97,8 +107,8 @@ module.exports = (app)=>{
               }else {
                 r = 1;
               }
-
-            createQtlyInstances(r,id);
+              console.log(regionId,divisionId,projectId,groupId);
+            createQtlyInstances(r,id,regionId,divisionId,projectId,groupId);
 
             function isInAry (v,ary){
               return ary.indexOf(v) > -1;
@@ -113,7 +123,7 @@ module.exports = (app)=>{
 
 
   }else{
-    console.log("Quarterly requirement is only set in the first month of the quarter. This is the "+ mo + " month of the " + moment().quarter() + " quarter of " + moment().year() +".")
+    console.log("Quarterly requirement is only set in the first month of the quarter. We are currently in "+ currentMonth + " of the " + moment().quarter() + " quarter of " + moment().year() +".")
   }
 
 

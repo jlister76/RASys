@@ -13,14 +13,6 @@
       "./mixins"
     ]
   },
-  "quarterly": {
-    "dataSource": "mssqldb",
-    "public": false
-  },
-  "monthly": {
-    "dataSource": "mssqldb",
-    "public": false
-  },
   "employee": {
     "dataSource": "mssqldb",
     "public": false
@@ -30,6 +22,34 @@
     "public": false
   },
   "vehicle_collision": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "region": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "division": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "project": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "group": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "quarterlyStatus": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "monthlyStatus": {
+    "dataSource": "mssqldb",
+    "public": false
+  },
+  "riskAssessment": {
     "dataSource": "mssqldb",
     "public": false
   }

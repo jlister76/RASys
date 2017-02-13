@@ -9,8 +9,8 @@ module.exports = (app)=> {
    * http://docs.strongloop.com/display/public/LB/Working+with+LoopBack+objects
    * for more info.
    */
-  let empl = app.models.employee,
-    i = app.models.injury,
+  let empl = app.models.Employee,
+    i = app.models.Injury,
     v = app.models.VehicleCollision,
     mo = moment().month(),
     ninetyDays = moment().subtract(90, 'days'),
@@ -26,38 +26,44 @@ module.exports = (app)=> {
       empl = data[0];
       i = data[1];
       v = data[2];
-
+      //console.log(empl);
       getNewHires(empl);
       getInjuriesAndAccidents(i,v);
       setMthlyStatus(empl,mthly);
 
       function getNewHires (empl){
         empl.forEach((e)=>{
-          if (e.hire_date <= ninetyDays){
+          console.log(e.id, e.hire_date);
+          if (e.hire_date >= ninetyDays){
+
             mthly.push(e.id);
           }
         })
       }
       function getInjuriesAndAccidents (inj,acc){
         inj.forEach((i)=>{
-          mthly.push(i.employee_id)
+          mthly.push(i.employeeId)
         });
         acc.forEach((a)=>{
-          mthly.push(a.employee_id)
+          mthly.push(a.employeeId)
         })
       }
-      function createMthlyInstance (s,id,qs){
-
-        app.models.monthly.create({
+      function createMthlyInstance (s,id,regionId,divisionId,projectId,groupId,qs){
+        //console.log("instances ",id, "qtrly ", qs);
+        app.models.monthlyStatus.create({
           "created_on": moment(),
           "qtr": moment().quarter(),
           "yr": moment().year(),
           "mo": moment().month(),
           "status": s,
           "met_requirement": null,
-          "employee_id": id,
-          "ra_id": null,
-          "qs_id": qs
+          "employeeId": id,
+          "regionId": regionId,
+          "divisionId": divisionId,
+          "projectId": projectId,
+          "groupId": groupId,
+          "riskAssessmentId": null,
+          "quarterlyStatusId": qs
         })
           .then((o)=>{
             //console.log(o);
@@ -70,7 +76,7 @@ module.exports = (app)=> {
       function setMthlyStatus(empl,mthly){
 
         empl.forEach((e)=>{
-          app.models.quarterly.findOne({"where": {"employee_id": e.id,"yr":moment().year(),"qtr":moment().quarter()}})
+          app.models.quarterlyStatus.findOne({"where": {"employeeId": e.id,"yr":moment().year(),"qtr":moment().quarter()}})
             .then((qs)=>{
             /*
             * Employees are set to complete once the quarterly requirement has been met.
@@ -90,7 +96,8 @@ module.exports = (app)=> {
               }else if(mo === 2 || mo === 5 || mo === 8 || mo === 11 && !isInAry(e.id,mthly) && qs.requirement_met){
                 status = "complete";
               }
-              createMthlyInstance(status,e.id,qs.id);
+              //console.log("creating instance ", e.id, "qtrly id ", qs.id);
+              createMthlyInstance(status,e.id,e.regionId,e.divisionId,e.projectId,e.groupId,qs.id);
 
             })
             .catch((err)=>{console.error(err)});

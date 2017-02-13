@@ -1,29 +1,36 @@
 {
-  "name": "employee",
+  "name": "monthlyStatus",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "fname": {
-      "type": "string",
-      "required": true
-    },
-    "lname": {
-      "type": "string",
-      "required": true
-    },
-    "email": {
-      "type": "string",
-      "required": true
-    },
-    "employeeNumber": {
-      "type": "Number",
-      "required": true
-    },
-    "hire_date": {
+    "created_on": {
       "type": "date",
+      "required": true
+    },
+    "mo": {
+      "type": "number",
+      "required": true
+    },
+    "qtr": {
+      "type": "number",
+      "required": true
+    },
+    "yr": {
+      "type": "number",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    },
+    "met_requirement": {
+      "type": "date"
+    },
+    "quarterlyStatusId": {
+      "type": "number",
       "required": true
     },
     "regionId": {
@@ -41,10 +48,19 @@
     "groupId": {
       "type": "number",
       "required": true
+    },
+    "riskAssessmentId": {
+      "type": "number",
+      "required": false
     }
   },
   "validations": [],
   "relations": {
+    "employee": {
+      "type": "belongsTo",
+      "model": "employee",
+      "foreignKey": ""
+    },
     "region": {
       "type": "belongsTo",
       "model": "region",
@@ -63,6 +79,16 @@
     "group": {
       "type": "belongsTo",
       "model": "group",
+      "foreignKey": ""
+    },
+    "quarterlyStatus": {
+      "type": "belongsTo",
+      "model": "quarterlyStatus",
+      "foreignKey": ""
+    },
+    "riskAssessment": {
+      "type": "belongsTo",
+      "model": "riskAssessment",
       "foreignKey": ""
     }
   },
